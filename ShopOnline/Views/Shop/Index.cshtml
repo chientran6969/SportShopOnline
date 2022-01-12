@@ -1,0 +1,294 @@
+﻿@model List<ShopOnline.ViewModels.CartItem>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*css thong bao cnd*@
+<link href="~/css/toastr.min.css" rel="stylesheet" />
+
+<style>
+
+    .table td {
+        vertical-align: middle;
+        font-weight: 600;
+    }
+
+    .table th {
+        color: #111111;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    td h6 {
+        font-weight: 600;
+    }
+
+    .price {
+        color: #ca1515;
+    }
+
+    .remove-item-btn span {
+        height: 45px;
+        width: 45px;
+        background: #f2f2f2;
+        border-radius: 50%;
+        font-size: 18px;
+        color: #111111;
+        line-height: 44px;
+        text-align: center;
+        display: inline-block;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .remove-item-btn :hover {
+        color: #ca1d24;
+    }
+</style>
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="/"><i class="fa fa-home"></i> Home</a>
+                    <span>Giỏ hàng</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Shop Cart Section Begin -->
+<section class="shop-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                @if (Model != null && Model.Count > 0)
+                {
+                    <table class="table text-center table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th>Hình ảnh</th>
+                                <th>Sản phẩm</th>
+                                <th>Size</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng cộng</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr id="item-@item.Product.ProductId">
+                                    <td><img style="max-width:70px;" src="~/images/product/@item.Product.Thumb" alt=""></td>
+                                    <td class="text-left">
+                                        <h6>@item.Product.ProductName</h6>
+                                    </td>
+                                    <td class="text-uppercase">@item.Size</td>
+                                    <td class="price">@item.Price.ToString("#,##0") đ</td>
+                                    <td>
+                                        <div class="item-quantity" >
+                                            <input type="number" data-id="@item.Product.ProductId" data-size="@item.Size" class="ml-3" min="1" value="@item.Quantity">
+                                        </div>
+                                    </td>
+                                    <td class="price amount-@item.Product.ProductId">@item.Amount.ToString("#,##0") đ</td>
+                                    <td class="remove-item-btn" data-id="@item.Product.ProductId" data-size="@item.Size"><span class="icon_close"></span></td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                }
+                else
+                {
+                    <hr />
+                    <h5 class="text-center">Không có sản phẩm nào trong giỏ hàng.</h5>
+                    <hr />
+                }
+                @*<div class="shop__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th class="size">Size</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng cộng</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Count > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="cart__product__item">
+                                                <img style="max-width:80px;" src="~/images/product/@item.Product.Thumb" alt="">
+                                                <h6 style="margin-top: 40px; font-weight: 600;">@item.Product.ProductName</h6>
+
+
+                                            </td>
+                                            <td style="font-weight: 600; padding-left: 15px;">@item.Size</td>
+                                            <td class="cart__price">@item.Price.ToString("#,##0") đ</td>
+                                            <td class="cart__quantity">
+                                                <div class="pro-qty">
+                                                    <input type="text" value="1">
+                                                </div>
+                                            </td>
+                                            <td class="cart__total">@item.Amount.ToString("#,##0")</td>
+                                            <td class="cart__close"><span class="icon_close"></span></td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>*@
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn">
+                    <a href="/Product">Tiếp tục mua sắm</a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn update__btn">
+                    <a href="/cart"><span class="icon_loading"></span>Cập nhật giỏ hàng</a>
+                </div>
+            </div>
+        </div>
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="discount__content">
+                        <h6>Mã giảm giá</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Nhập mã giảm giá của bạn">
+                            <button type="submit" class="site-btn">Apply</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Tổng cộng giỏ hàng</h6>
+                        <ul>
+                            <li>Thành tiền:<span class="total-money">@Model.Sum(p => p.Amount).ToString("#,##0") đ</span></li>
+                        </ul>
+                        <a href="/shop/checkout" class="primary-btn">Đặt hàng</a>
+                    </div>
+                </div>
+
+
+            </div>
+        }
+    </div>
+</section>
+<!-- Shop Cart Section End -->
+@section Scripts {
+    @* js thong bao*@
+    <script src="~/js/toastr.min.js"></script>
+    <script>
+        // nhấn nút xóa
+        $(document).ready(function () {
+            $(".remove-item-btn").click(function () {
+
+                if (confirm("Bạn có muốn xóa khỏi giỏ hàng?")) {
+                    var size = $(this).data("size");
+                    var productID = $(this).data("id");
+
+
+                    $.ajax({
+                        url: '/api/cart/remove',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {
+                            productID: productID,
+                            size: size
+                        },
+                        success: function (response) {
+                            console.log("ok");
+                            if (response.success) {
+                                $(".number-cart").load("/shop/LoadNumberCart");
+
+                                var totalMoney = new Intl.NumberFormat().format(response.totalMoney);
+
+                                
+                                $(".total-money").text(totalMoney + " đ");
+                                $("#item-" + productID).remove();
+                                toastr.success('Đã xóa sản phẩm khỏi giỏ hàng')
+                            }
+                            else {
+                                console.log("fail");
+                                toastr.error('Xóa sản phẩm thất bại')
+                            }
+                        },
+                        error: function (error) {
+                            console.log("Lỗi");
+                            toastr.error('Xóa sản phẩm thất bại')
+                        }
+                    });
+                }
+                
+            });
+
+
+            // cập nhật số lượng sản phẩm
+            $(".item-quantity input").change(function () {
+                let size = $(this).data("size");
+                let productID = $(this).data("id");
+                let quantity = $(this).val();
+                
+                if (quantity <= 0) {
+                    alert("Số lượng sản phẩm không nhỏ hơn 1")
+                    location.reload();
+                    
+                } else {
+
+                    $.ajax({
+                        url: '/api/cart/update',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {
+                            productID: productID,
+                            size: size,
+                            quantity: quantity
+                        },
+                        success: function (response) {
+
+                            if (response.success) {
+                                
+                                var totalMoney = new Intl.NumberFormat().format(response.totalMoney);
+                                var amount = new Intl.NumberFormat().format(response.amount);
+                                $(".total-money").text(totalMoney + " đ");
+                                $(".amount-" + productID).text(amount + " đ")
+                               
+                                toastr.success('Đã cập nhật giỏ hàng');
+                            }
+                            else {
+                                console.log("fail");
+                            }
+                        },
+                        error: function (error) {
+                            console.log('error');
+                        }
+                    });
+
+                }
+
+                
+
+                
+            });
+        });
+    </script>
+}

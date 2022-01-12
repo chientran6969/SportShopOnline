@@ -1,0 +1,298 @@
+﻿@model ShopOnline.ViewModels.AddProduct
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- page css -->
+<link href="~/Adminassets/vendors/select2/select2.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="page-header">
+        <h2 class="header-title">Sửa sản phẩm</h2>
+        <div class="header-sub-title">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+                <a class="breadcrumb-item" asp-area="Admin" asp-controller="Products" asp-action="Index">Quản lý sản phẩm</a>
+                <span class="breadcrumb-item active">Sửa sản phẩm</span>
+            </nav>
+        </div>
+    </div>
+    <div class="page-header no-gutters has-tab">
+        <div class="m-b-15 text-right">
+            <button type="submit" class="btn btn-primary">
+                <i class="anticon anticon-save"></i>
+                <span>Lưu</span>
+            </button>
+        </div>
+        @*<div class="d-md-flex m-b-15 align-items-center justify-content-between">
+                <div class="media align-items-center m-b-15">
+                    <div class="avatar avatar-image rounded" style="height: 70px; width: 70px">
+                        <img src="assets/images/others/thumb-16.jpg" alt="">
+                    </div>
+                    <div class="m-l-15">
+                        <h4 class="m-b-0">Skinny Men Blazer</h4>
+                        <p class="text-muted m-b-0">Code: #5325</p>
+                    </div>
+                </div>
+                <div class="m-b-15">
+                    <button class="btn btn-primary">
+                        <i class="anticon anticon-plus-circle"></i>
+                        <span>Thêm</span>
+                    </button>
+                </div>
+            </div>*@
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Basic Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-option">Option Info</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-description">Description</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <input hidden asp-for="ProductId" />
+                        <input hidden asp-for="Thumb" />
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput">Tên sản phẩm:</label>
+                            <input asp-for="ProductName" type="text" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Tên sản phẩm">
+                            <span asp-validation-for="ProductName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput">Giá:</label>
+                            <input asp-for="Price" type="number" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Giá">
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="exampleFormControlSelect1">Danh mục</label>
+                            <select class="select2 w-100" name="CatId" asp-items="ViewBag.Categories" multiple="multiple">
+                            </select>
+                            @*<select asp-for="CatId" id="catID" name="catID" asp-items="ViewBag.Categories" class="form-control select2" multiple="multiple">
+                                </select>*@
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput3">Khuyến mãi(%):</label>
+                            <input asp-for="Discount" type="number" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Khuyến mãi">
+                            <span asp-validation-for="Discount" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput3">Ảnh:</label>
+                            <input type="file" name="fthumb" class="form-control" id="formGroupExampleInput3"
+                                   placeholder="Khuyến mãi">
+                            <span asp-validation-for="Thumb" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label class="control-label">Kích hoạt:</label>
+                            <div class="switch mt-2">
+                                <input asp-for="Active" type="checkbox" id="switch-1" checked="checked">
+                                <label for="switch-1"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product-edit-option">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput">Nhãn hiệu</label>
+                            <input asp-for="Brand" type="text" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Nhãn hiệu">
+                            <span asp-validation-for="Brand" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput">Màu sắc</label>
+                            <input asp-for="Color" type="text" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Màu sắc">
+                            <span asp-validation-for="Color" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput">Size S</label>
+                            <input asp-for="SizeS" type="number" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Số lượng">
+                            <span asp-validation-for="SizeS" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput">Size M</label>
+                            <input asp-for="SizeM" type="number" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Số lượng">
+                            <span asp-validation-for="SizeM" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput">Size L</label>
+                            <input asp-for="SizeL" type="number" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Số lượng">
+                            <span asp-validation-for="SizeL" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="formGroupExampleInput">Size XL</label>
+                            <input asp-for="SizeXl" type="number" class="form-control" id="formGroupExampleInput"
+                                   placeholder="Số lượng">
+                            <span asp-validation-for="SizeXl" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="product-edit-description">
+            <div class="card">
+                <div class="card-body">
+                    <textarea rows="5" asp-for="Description" class="form-control" id="summernote"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@*<h1>Edit</h1>
+
+    <h4>Product</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ProductId" />
+                <div class="form-group">
+                    <label asp-for="ProductName" class="control-label"></label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CatId" class="control-label"></label>
+                    <input asp-for="CatId" class="form-control" />
+                    <span asp-validation-for="CatId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Discount" class="control-label"></label>
+                    <input asp-for="Discount" class="form-control" />
+                    <span asp-validation-for="Discount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Thumb" class="control-label"></label>
+                    <input asp-for="Thumb" class="form-control" />
+                    <span asp-validation-for="Thumb" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Brand" class="control-label"></label>
+                    <input asp-for="Brand" class="form-control" />
+                    <span asp-validation-for="Brand" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="BestSeller" /> @Html.DisplayNameFor(model => model.BestSeller)
+                    </label>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="HomeFlag" /> @Html.DisplayNameFor(model => model.HomeFlag)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Alias" class="control-label"></label>
+                    <input asp-for="Alias" class="form-control" />
+                    <span asp-validation-for="Alias" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Color" class="control-label"></label>
+                    <input asp-for="Color" class="form-control" />
+                    <span asp-validation-for="Color" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SizeS" class="control-label"></label>
+                    <input asp-for="SizeS" class="form-control" />
+                    <span asp-validation-for="SizeS" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SizeM" class="control-label"></label>
+                    <input asp-for="SizeM" class="form-control" />
+                    <span asp-validation-for="SizeM" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SizeL" class="control-label"></label>
+                    <input asp-for="SizeL" class="form-control" />
+                    <span asp-validation-for="SizeL" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SizeXl" class="control-label"></label>
+                    <input asp-for="SizeXl" class="form-control" />
+                    <span asp-validation-for="SizeXl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Stock" class="control-label"></label>
+                    <input asp-for="Stock" class="form-control" />
+                    <span asp-validation-for="Stock" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+
+            $('#summernote').summernote({
+
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <!-- page js -->
+    <script src="~/Adminassets/vendors/select2/select2.min.js"></script>
+    <script src="~/Adminassets/js/pages/e-commerce-product-edit.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}

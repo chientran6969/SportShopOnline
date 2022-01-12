@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewData["Title"] = "Blog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+    int CurrentPage = (int)ViewBag.CurrentPage;
+    int TotalPage = (int)ViewBag.TotalPage;
+
+
+}
+@model PagedList.Core.IPagedList<Post>
+@using PagedList.Core.Mvc
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <!-- Breadcrumb Begin -->
+        <div class="breadcrumb-option">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb__links">
+                            <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                            <span>Blog</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+        <!-- Blog Section Begin -->
+        <section class="blog spad">
+            <div class="container">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                    <div class="col-lg-4 col-md-6 col-sm-12 h-auto">
+                        <div class="blog__item">
+                            <div class="blog__item__pic large__item set-bg" data-setbg="/images/posts/@item.Thumb"></div>
+                            <div class="blog__item__text">
+                                <h6><a class="blog__item__title" href="/blog/details/@item.PostId">@item.Title</a></h6>
+                                <ul>
+                                    <li>by <span>@item.Account.FullName</span></li>
+                                    <li>@item.CreateAt</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+                <div class="col-lg-12 text-center">
+                    <div class="pagination__option">
+                        @{
+                            if (CurrentPage != 1)
+                            {
+                                <a href="@Url.Action("Index", new { page = CurrentPage - 1 })"><i class="fa fa-angle-left"></i></a>
+                            }
+                        }
+
+                        @{
+                            for (var i = 1; i <= TotalPage; i++)
+                            {
+                                @if (CurrentPage == i)
+                                {
+                                    <a class="active" href="@Url.Action("Index", new { page = i })">@i</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Index", new { page = i })">@i</a>
+                                }
+
+                            }
+                        }
+                        @{
+                            if (CurrentPage < TotalPage)
+                            {
+                                <a href="@Url.Action("Index", new { page = CurrentPage + 1 })"><i class="fa fa-angle-right"></i></a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Blog Section End -->
+    </main>
+</div>

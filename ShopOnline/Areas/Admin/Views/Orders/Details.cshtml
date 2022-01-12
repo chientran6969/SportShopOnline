@@ -1,0 +1,264 @@
+﻿@model ShopOnline.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+@* trang thai don hang*@
+<link href="~/css/ShippingProgress.css" rel="stylesheet" />
+<link href="~/css/toastr.min.css" rel="stylesheet" />
+
+<div class="main-content">
+    <div class="page-header">
+        <h2 class="header-title">Chi tiết đơn hàng</h2>
+        <div class="header-sub-title">
+            <nav class="breadcrumb breadcrumb-dash">
+                <a href="/Admin" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+                <a class="breadcrumb-item" href="/Admin/Orders">Quản lý đơn hàng</a>
+                <span class="breadcrumb-item active">Chi tiết đơn hàng</span>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="container">
+        @*trang thai don hang*@
+        <div class="card card-timeline px-2 border-none">
+            <ul class="bs4-order-tracking">
+                @if (Model.Status == 1)
+                {
+                    <li class="step active" id="step1" data-orderID="@Model.OrderId" data-statusID="1">
+                        <div><i class="fas fa-shopping-cart"></i></div> Chờ xác nhận
+                    </li>
+                    <li class="step" id="step2" data-orderID="@Model.OrderId" data-statusID="2">
+                        <div><i class="fas fa-box-open"></i></div> Đang đóng gói
+                    </li>
+                    <li class="step" id="step3" data-orderID="@Model.OrderId" data-statusID="3">
+                        <div><i class="fas fa-truck"></i></div> Đang giao hàng
+                    </li>
+                    <li class="step" id="step4" data-orderID="@Model.OrderId" data-statusID="4">
+                        <div><i class="fas fa-check-circle"></i></div> Hoàn thành
+                    </li>
+                }
+                else if (Model.Status == 2)
+                {
+                    <li class="step active" id="step1" data-orderID="@Model.OrderId" data-statusID="1">
+                        <div><i class="fas fa-shopping-cart"></i></div> Chờ xác nhận
+                    </li>
+                    <li class="step active" id="step2" data-orderID="@Model.OrderId" data-statusID="2">
+                        <div><i class="fas fa-box-open"></i></div> Đang đóng gói
+                    </li>
+                    <li class="step" id="step3" data-orderID="@Model.OrderId" data-statusID="3">
+                        <div><i class="fas fa-truck"></i></div> Đang giao hàng
+                    </li>
+                    <li class="step" id="step4" data-orderID="@Model.OrderId" data-statusID="4">
+                        <div><i class="fas fa-check-circle"></i></div> Hoàn thành
+                    </li>
+                }
+                else if (Model.Status == 3)
+                {
+                    <li class="step active" id="step1" data-orderID="@Model.OrderId" data-statusID="1">
+                        <div><i class="fas fa-shopping-cart"></i></div> Chờ xác nhận
+                    </li>
+                    <li class="step active" id="step2" data-orderID="@Model.OrderId" data-statusID="2">
+                        <div><i class="fas fa-box-open"></i></div> Đang đóng gói
+                    </li>
+                    <li class="step active" id="step3" data-orderID="@Model.OrderId" data-statusID="3">
+                        <div><i class="fas fa-truck"></i></div> Đang giao hàng
+                    </li>
+                    <li class="step" id="step4" data-orderID="@Model.OrderId" data-statusID="4">
+                        <div><i class="fas fa-check-circle"></i></div> Hoàn thành
+                    </li>
+                }
+                else if (Model.Status == 4)
+                {
+                    <li class="step active" id="step1" data-orderID="@Model.OrderId" data-statusID="1">
+                        <div><i class="fas fa-shopping-cart"></i></div> Chờ xác nhận
+                    </li>
+                    <li class="step active" id="step2" data-orderID="@Model.OrderId" data-statusID="2">
+                        <div><i class="fas fa-box-open"></i></div> Đang đóng gói
+                    </li>
+                    <li class="step active" id="step3" data-orderID="@Model.OrderId" data-statusID="3">
+                        <div><i class="fas fa-truck"></i></div> Đang giao hàng
+                    </li>
+                    <li class="step active" id="step4" data-orderID="@Model.OrderId" data-statusID="4">
+                        <div><i class="fas fa-check-circle"></i></div> Hoàn thành
+                    </li>
+                }
+
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div id="invoice" class="p-h-30">
+                    <div class="m-t-15 lh-2">
+                        <div class="inline-block">
+                            <img class="img-fluid" src="~/Adminassets/images/logo/logo.png" alt="">
+                            <address class="p-l-10">
+                                <span class="font-weight-semibold text-dark">CH Sportplus</span><br>
+                                <span>89 Nguyễn Hữu Thọ</span><br>
+                                <span>Quận 7, TP. Hồ Chí Minh</span><br>
+                                <abbr class="text-dark" title="Phone">Phone:</abbr>
+                                <span>096.9696.969</span>
+                            </address>
+                        </div>
+                        <div class="float-right">
+                            <h2>Hóa Đơn</h2>
+                        </div>
+                    </div>
+                    <div class="row m-t-20 lh-2">
+                        <div class="col-sm-9">
+                            <h3 class="p-l-10 m-t-10">Thông tin khách hàng</h3>
+                            <address class="p-l-10 m-t-10">
+                                <span class="font-weight-semibold text-dark">@Model.Account.FullName</span><br>
+                                <span>Địa chỉ: @Model.Address</span><br>
+                                <span>SĐT: @Model.PhoneNumber</span>
+                            </address>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="m-t-80">
+                                <div class="text-dark text-uppercase d-inline-block">
+                                    <span class="font-weight-semibold text-dark">Mã đơn hàng:</span>
+                                </div>
+                                <div class="float-right">#@Model.OrderId</div>
+                            </div>
+                            <div class="text-dark text-uppercase d-inline-block">
+                                <span class="font-weight-semibold text-dark">Ngày:</span>
+                            </div>
+                            <div class="float-right">@Model.OrderDate</div>
+                        </div>
+                    </div>
+                    <div class="m-t-20">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Stt</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Kích cỡ</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá</th>
+                                        <th>Tổng cộng</th>
+                                    </tr>
+                                </thead>
+                                @{ int index = 1; }
+                                @foreach (var item in Model.OrderProducts)
+                                {
+                            <tr>
+                                <th>@index</th>
+                                <td>
+                                    <img class="img-fluid rounded"
+                                         src="~/images/product/@item.Product.Thumb" style="max-width: 60px"
+                                         alt="">
+                                    @item.Product.ProductName
+                                </td>
+                                <td class="text-uppercase">@item.Size</td>
+                                <td>@item.Quantity</td>
+                                @if (item.Product.Discount > 0)
+                                {
+                                    var priceBefore = item.Product.Price - (item.Product.Price * item.Product.Discount / 100);
+                                    var priceAfter = Math.Round(Convert.ToDouble(priceBefore) / 10000) * 10000;
+                                    <td class="font-weight-bold">@priceAfter.ToString("#,##0")đ</td>
+
+                                }
+                                else
+                                {
+                                    <td class="font-weight-bold">@item.Product.Price.Value.ToString("#,##0")đ</td>
+                                }
+                                <td class="font-weight-bold">@item.Total.Value.ToString("#,##0")đ</td>
+                            </tr>
+                                    { index++; }
+                                }
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row lh-1-8">
+                            <div class="col-sm-12">
+                                <div class="float-right text-right">
+                                    @*<p>Sub - Total amount: $2,325</p>
+                                        <p>vat (10%) : $232 </p>*@
+                                    <hr>
+                                    <h3 class="text-danger"><span class="font-weight-semibold text-dark">Thành tiền:  </span>@Model.Amount.Value.ToString("#,##0")đ</h3>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="row m-t-30 lh-2">
+                                <div class="col-sm-12">
+                                    <div class="border-bottom p-v-20">
+                                        <p class="text-opacity"><small>In exceptional circumstances, Financial Services can provide an urgent manually processed special cheque. Note, however, that urgent special cheques should be requested only on an emergency basis as manually produced cheques involve duplication of effort and considerable staff resources. Requests need to be supported by a letter explaining the circumstances to justify the special cheque payment.</small></p>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="row m-v-20">
+                            <div class="col-sm-6">
+                                <img class="img-fluid text-opacity m-t-5" width="100" src="~/Adminassets/images/logo/logo.png" alt="">
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <small><span class="font-weight-semibold text-dark">Phone:</span> (123) 456-7890</small>
+                                <br>
+                                <small>support@themenate.com</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+
+            $(".step").click(function () {
+
+                //let statusID = this.id.charAt(this.id.length - 1)
+                var statusID = $(this).attr("data-statusID");
+                var orderID = $(this).attr("data-orderID");
+
+                //ep ve int
+                statusID = parseInt(statusID);
+                orderID = parseInt(orderID);
+
+                /*thay doi thanh trang thai*/
+                $(".step").removeClass("active");
+                for (let i = 1; i <= statusID; i++) {
+
+                    let step = "#step" + i
+                    $(step).addClass("active");
+                }
+
+
+                $.ajax({
+                    url: '/Admin/Orders/Status',
+                    datatype: "json",
+                    type: "GET",
+                    data: {
+                        OrderID: orderID,
+                        StatusID: statusID
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.success == true) {
+                            toastr.success('Cập nhật trạng thái thành công');
+                        } else {
+                            toastr.error('Cập nhật trạng thái thất bại');
+                        }
+
+                    },
+                    error: function (xhr) {
+                        toastr.error('Cập nhật trạng thái thất bại');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,212 @@
+﻿@model ShopOnline.Models.Account
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="page-header">
+    <h2 class="header-title">Thông tin tài khoản</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a href="/Admin" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+            <a class="breadcrumb-item" href="/Admin/Accounts">Quản lý tài khoản</a>
+            <span class="breadcrumb-item active">Thông tin tài khoản</span>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="d-md-flex align-items-center">
+                        <div class="text-center text-sm-left ">
+                            <div class="avatar avatar-image" style="width: 150px; height:150px">
+                                <img src="assets/images/avatars/thumb-3.jpg" alt="">
+                            </div>
+                        </div>
+
+                        <div class="text-center text-sm-left m-v-15 p-l-30">
+                            <form asp-action="Edit" method="post">
+                                <input type="hidden" asp-for="AccountId" />
+                                <h2 class="m-b-5">@Model.FullName</h2>
+                                <p class="text-opacity font-size-13">@Model.Birthday</p>
+                                <div class="form-group form-inline">
+                                    <label class="control-label text-dark mr-3">Kích hoạt: </label>
+                                    @if (Model.Active)
+                                    {
+                                        <div class="switch">
+                                            <input asp-for="Active" type="checkbox" id="switch-1" checked="checked">
+                                            <label for="switch-1"></label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="switch">
+                                            <input asp-for="Active" type="checkbox" id="switch-1">
+                                            <label for="switch-1"></label>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="form-group form-inline">
+                                    <label class="control-label text-dark">Quyền: </label>
+                                    <select class="form-control ml-3" asp-for="Role">
+                                        @if (Model.Role == "Admin")
+                                        {
+                                            <option value="Admin">Admin</option>
+                                            <option value="Staff">Staff</option>
+                                            <option value="Customer">Customer</option>
+                                        }
+                                        else if (Model.Role == "Staff")
+                                        {
+                                            <option value="Admin">Admin</option>
+                                            <option value="Staff" selected="selected">Staff</option>
+                                            <option value="Customer">Customer</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Admin">Admin</option>
+                                            <option value="Staff">Staff</option>
+                                            <option value="Customer" selected="selected">Customer</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Role" class="text-danger"></span>
+                                    <div>
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    </div>
+                                </div>
+                                <input type="submit" value="Lưu" class="btn btn-primary btn-tone m-t-20" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="d-md-block d-none border-left col-1"></div>
+                        <div class="col">
+                            <ul class="list-unstyled m-t-10">
+                                <li class="row">
+                                    <p class="col-sm-4 col-4 font-weight-semibold text-dark m-b-5">
+                                        <i class="m-r-10 text-primary anticon anticon-mail"></i>
+                                        <span>Email: </span>
+                                    </p>
+                                    <p class="col font-weight-semibold">@Model.Email</p>
+                                </li>
+                                <li class="row">
+                                    <p class="col-sm-4 col-4 font-weight-semibold text-dark m-b-5">
+                                        <i class="m-r-10 text-primary anticon anticon-phone"></i>
+                                        <span>Điện thoại: </span>
+                                    </p>
+                                    <p class="col font-weight-semibold"> @Model.Phone</p>
+                                </li>
+                                <li class="row">
+                                    <p class="col-sm-4 col-5 font-weight-semibold text-dark m-b-5">
+                                        <i class="m-r-10 text-primary anticon anticon-compass"></i>
+                                        <span>Địa chỉ: </span>
+                                    </p>
+                                    <p class="col font-weight-semibold">@Model.Address</p>
+                                </li>
+                                <li class="row">
+                                    <p class="col-sm-4 col-5 font-weight-semibold text-dark m-b-5">
+                                        <i class="m-r-10 text-primary anticon anticon-calendar"></i>
+                                        <span>Date: </span>
+                                    </p>
+                                    <p class="col font-weight-semibold">@Model.CreateAt</p>
+                                </li>
+                            </ul>
+                            <div class="d-flex font-size-22 m-t-15">
+                                <a href="" class="text-gray p-r-20">
+                                    <i class="anticon anticon-facebook"></i>
+                                </a>
+                                <a href="" class="text-gray p-r-20">
+                                    <i class="anticon anticon-twitter"></i>
+                                </a>
+                                <a href="" class="text-gray p-r-20">
+                                    <i class="anticon anticon-behance"></i>
+                                </a>
+                                <a href="" class="text-gray p-r-20">
+                                    <i class="anticon anticon-dribbble"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<h4>Account</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AccountId" />
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FullName" class="control-label"></label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Birthday" class="control-label"></label>
+                    <input asp-for="Birthday" class="form-control" />
+                    <span asp-validation-for="Birthday" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Role" class="control-label"></label>
+                    <input asp-for="Role" class="form-control" />
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Active" class="control-label"></label>
+                    <input asp-for="Active" class="form-control" />
+                    <span asp-validation-for="Active" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastLogin" class="control-label"></label>
+                    <input asp-for="LastLogin" class="form-control" />
+                    <span asp-validation-for="LastLogin" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreateAt" class="control-label"></label>
+                    <input asp-for="CreateAt" class="form-control" />
+                    <span asp-validation-for="CreateAt" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

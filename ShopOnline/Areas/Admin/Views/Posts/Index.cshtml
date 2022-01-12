@@ -1,0 +1,177 @@
+﻿@model IEnumerable<ShopOnline.Models.Post>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+<!-- page css -->
+<link href="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+
+<!-- Content Wrapper START -->
+
+<div class="page-header">
+    <h2 class="header-title">Quản lý bài viết</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a href="#" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+            
+            <span class="breadcrumb-item active">Quản lý bài viết</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="m-b-30">
+            <div class="text-right">
+                <a class="btn btn-primary" asp-action="Create">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Thêm</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table" id="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tiêu đề</th>
+                        <th>Tác giả</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.PostId</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded" src="~/images/posts/@item.Thumb" style="max-width: 60px" alt="">
+                                        <h6 class="m-b-0 m-l-10">@item.Title</h6>
+                                    </div>
+                                </td>
+                                <td>@item.Account.FullName</td>
+                                <td>
+                                    @if (item.Active)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Công khai</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>Ẩn</div>
+                                        </div>
+                                    }
+
+                                </td>
+                                <td>
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Details" asp-route-id="@item.PostId">
+                                        <i class="anticon anticon-info-circle"></i>
+                                    </a>
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Edit" asp-route-id="@item.PostId">
+                                        <i class="anticon anticon-edit"></i>
+                                    </a>
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Delete" asp-route-id="@item.PostId">
+                                        <i class="anticon anticon-delete"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Content Wrapper END -->
+
+@section Scripts {
+
+    <!-- page js -->
+    <script src="~/Adminassets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Adminassets/js/pages/datatables.js"></script>
+}
+
+
+
+@*<h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Context)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Thumb)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Alias)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreateAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Active)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Account)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Context)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Thumb)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Alias)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Active)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Account.AccountId)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+

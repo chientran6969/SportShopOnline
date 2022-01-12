@@ -1,0 +1,238 @@
+﻿@model ShopOnline.Models.Product
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var relatedProduct = ViewData["relatedProduct"] as IList<Product>;
+
+    Random r = new Random();
+    var reviews = r.Next(100, 200);
+
+}
+@*css thong bao cnd*@@*css thong bao cnd*@
+<link href="~/css/toastr.min.css" rel="stylesheet" />
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="/"><i class="fa fa-home"></i>Trang chủ</a>
+                    <a href="/Procduct">Sản phẩm</a>
+                    <span>@Model.ProductName</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+                <img class="w-100" src="~/images/product/@Model.Thumb" />
+
+            </div>
+            <div class="col-lg-7">
+                <div class="product__details__text">
+                    <h3>@Model.ProductName<span>Brand: @Model.Brand</span></h3>
+                    <div class="rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <span>( @reviews reviews )</span>
+                    </div>
+                    @if (Model.Discount > 0)
+                    {
+
+                        var priceBefore = Model.Price - (Model.Price * Model.Discount / 100);
+                        var priceAfter = Math.Round(Convert.ToDouble(priceBefore) / 10000) * 10000;
+
+                        <div class="product__details__price">
+                            @priceAfter.ToString("#,##0") đ
+                            <span>@Model.Price.Value.ToString("#,##0") đ</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="product__details__price">
+                            @Model.Price.Value.ToString("#,##0") đ
+                        </div>
+                    }
+
+                    <p>
+                        @Html.Raw(Model.Description)
+                    </p>
+
+                    <div class="product__details__widget">
+                        <ul>
+                            <li>
+                                <span>Kích cỡ:</span>
+                                <div class="size__btn">
+                                    <label for="s-btn" id="s" class="active">
+                                        <input type="radio" id="s-btn">
+                                        s
+                                    </label>
+                                    <label for="m-btn" id="m">
+                                        <input type="radio" id="m-btn">
+                                        m
+                                    </label>
+                                    <label for="l-btn" id="l">
+                                        <input type="radio" id="l-btn">
+                                        l
+                                    </label>
+                                    <label for="xl-btn" id="xl">
+                                        <input type="radio" id="xl-btn">
+                                        xl
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <span>Vận chuyển:</span>
+                                <p>Miễn phí</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="product__details__button mt-4">
+                        <div class="quantity">
+                            <span>Quantity:</span>
+                            <div class="pro-qty">
+                                <input type="text" id="quantity" value="1">
+                            </div>
+                        </div>
+                        <a data-productID="@Model.ProductId" class="cart-btn mr-3" style="cursor:pointer"><span class="icon_cart_alt mr-2"></span> Thêm vào giỏ hàng</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <hr class="mt-4" />
+        @if (relatedProduct != null && relatedProduct.Count > 0)
+        {
+            <div class="row mt-5">
+                <div class="col-lg-12 text-center">
+                    <div class="related__title">
+                        <h5>RELATED PRODUCTS</h5>
+                    </div>
+                </div>
+                @*<div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="~/img/product/related/rp-1.jpg">
+                                <div class="label new">New</div>
+                                <ul class="product__hover">
+                                    <li><a href="img/product/related/rp-1.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Buttons tweed blazer</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>*@
+                @foreach (var item in relatedProduct)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-6 mix ">
+                        <div class="product__item">
+                            @*<div class="product__item__pic set-bg" data-setbg="images/product/related/rp-1.jpg">*@
+                            <div class="product__item__pic">
+                                <img src="~/images/product/@item.Thumb" />
+                                <div class="d-inline-block">
+                                    @if (item.Discount > 0)
+                                    {
+                                        <div class="label sale">Giảm @item.Discount%</div>
+                                    }
+                                </div>
+                                <ul class="product__hover">
+                                    <li><a href="#" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="/product/details/@item.ProductId">@item.ProductName</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                @if (item.Discount > 0)
+                                {
+
+                                    var priceBefore = item.Price - (item.Price * item.Discount / 100);
+                                    var priceAfter = Math.Round(Convert.ToDouble(priceBefore) / 10000) * 10000;
+
+                                    <div class="product__price">
+                                        <span class="text-danger text-decoration-none">@priceAfter.ToString("#,##0") đ</span>
+                                        <span>@item.Price.Value.ToString("#,##0") đ</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="product__price">
+                                        @item.Price.Value.ToString("#,##0") đ
+                                    </div>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</section>
+<!-- Product Details Section End -->
+@section Scripts {
+    @* js thong bao*@
+    <script src="~/js/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".cart-btn").click(function () {
+                var size = $(".size__btn .active").attr("id");
+                var quantity = parseFloat($("#quantity").val());
+                var productID = parseFloat($(this).attr("data-productID"));
+                $.ajax({
+                    url: '/api/cart/add',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        productID: productID,
+                        size: size,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $(".number-cart").load("/shop/LoadNumberCart");
+                            toastr.success('Đã thêm sản phẩm vào giỏ hàng')
+                        }
+                        else {
+                            console.log("fail");
+                            toastr.error('Thêm sản phẩm thất bại')
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Lỗi");
+                        toastr.error('Thêm sản phẩm thất bại')
+                    }
+                });
+            });
+        });
+    </script>
+}

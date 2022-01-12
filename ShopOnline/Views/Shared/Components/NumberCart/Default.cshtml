@@ -1,0 +1,16 @@
+﻿@model List<ShopOnline.ViewModels.CartItem>
+@if (Model != null && Model.Count() > 0)
+{
+    <a href="/cart">
+        <span class="icon_bag_alt"></span>
+        <div class="tip">@Model.Count()</div>
+    </a>
+}
+else
+{
+    <a href="/cart">
+        <span class="icon_bag_alt"></span>
+        <div class="tip">0</div>
+    </a>
+}
+

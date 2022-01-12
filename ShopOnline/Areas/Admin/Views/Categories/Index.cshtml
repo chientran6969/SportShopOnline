@@ -1,0 +1,100 @@
+﻿@model IEnumerable<ShopOnline.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!-- page css -->
+<link href="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+
+<!-- Content Wrapper START -->
+
+<div class="page-header">
+    <h2 class="header-title">Quản lý danh mục</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a href="/Admin" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+            <span class="breadcrumb-item active">Quản lý danh mục</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="m-b-30">
+            <div class="text-right">
+                <a class="btn btn-primary" asp-action="Create">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Thêm danh mục</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="m-t-10">
+            <table id="data-table" class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên danh mục</th>
+                        
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.CatId</td>
+                                <td>@item.CatName</td>
+                                <td>
+                                    @if (item.Active == true)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Kích hoạt</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>Khóa</div>
+                                        </div>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Edit" asp-route-id="@item.CatId">
+                                        <i class="anticon anticon-edit"></i>
+                                    </a>
+
+                                    <a onclick="return confirm('Bạn có muốn xóa?')" class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Delete" asp-route-id="@item.CatId">
+                                        <i class="anticon anticon-delete"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Content Wrapper END -->
+
+@section Scripts {
+
+    
+    <!-- page js -->
+    <script src="~/Adminassets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Adminassets/js/pages/datatables.js"></script>
+}
+

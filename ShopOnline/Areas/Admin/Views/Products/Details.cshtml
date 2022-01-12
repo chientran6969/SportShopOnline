@@ -1,0 +1,224 @@
+﻿@model ShopOnline.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<!-- Content Wrapper START -->
+<div class="main-content">
+    <div class="page-header no-gutters has-tab">
+        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="media align-items-center m-b-15">
+                <div class="avatar avatar-image rounded" style="height: auto; width: 50px">
+                    <img src="~/images/product/@Model.Thumb" alt="">
+                </div>
+                <div class="m-l-15">
+                    <h4 class="m-b-0">@Model.ProductName</h4>
+
+                </div>
+            </div>
+            <div class="m-b-15">
+                <a asp-action="Index" class="btn btn-info mr-2">
+                    <i class="anticon anticon-backward m-r-5"></i>
+                    <span>Trở về</span>
+                </a>
+                <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-primary mr-2">
+                    <i class="anticon anticon-edit m-r-5"></i>
+                    <span>Sửa</span>
+                </a>
+                <a onclick="return confirm('Bạn có muốn xóa?')" asp-action="Delete" asp-route-id="@Model.ProductId" class="btn btn-danger">
+                    <i class="anticon anticon-delete m-r-5"></i>
+                    <span>Xóa</span>
+                </a>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-overview">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-images">Product Images</a>
+            </li>
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <div class="tab-content m-t-15">
+            <div class="tab-pane fade show active" id="product-overview">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media align-items-center">
+                                    <i class="font-size-40 text-success anticon anticon-smile"></i>
+                                    <div class="m-l-15">
+                                        <p class="m-b-0 text-muted">10 ratings</p>
+                                        <div class="star-rating m-t-5">
+                                            <input type="radio" id="star3-5" name="rating-3" value="5" checked disabled /><label for="star3-5" title="5 star"></label>
+                                            <input type="radio" id="star3-4" name="rating-3" value="4" disabled /><label for="star3-4" title="4 star"></label>
+                                            <input type="radio" id="star3-3" name="rating-3" value="3" disabled /><label for="star3-3" title="3 star"></label>
+                                            <input type="radio" id="star3-2" name="rating-3" value="2" disabled /><label for="star3-2" title="2 star"></label>
+                                            <input type="radio" id="star3-1" name="rating-3" value="1" disabled /><label for="star3-1" title="1 star"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media align-items-center">
+                                    <i class="font-size-40 text-primary anticon anticon-shopping-cart"></i>
+                                    <div class="m-l-15">
+                                        <p class="m-b-0 text-muted">Sales</p>
+                                        <h3 class="m-b-0 ls-1">1,521</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media align-items-center">
+                                    <i class="font-size-40 text-primary anticon anticon-message"></i>
+                                    <div class="m-l-15">
+                                        <p class="m-b-0 text-muted">Reviews</p>
+                                        <h3 class="m-b-0 ls-1">27</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media align-items-center">
+                                    <i class="font-size-40 text-primary anticon anticon-stock"></i>
+                                    <div class="m-l-15">
+                                        <p class="m-b-0 text-muted">Available Stock</p>
+                                        <h3 class="m-b-0 ls-1">@Model.Stock</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Thông tin cơ bản</h4>
+                        <div class="table-responsive">
+                            <table class="product-info-table m-t-20">
+                                <tbody>
+                                    <tr>
+                                        <td>Danh mục:</td>
+
+                                        <td>
+                                            @foreach (var c in Model.CategoryProducts)
+                                            {
+                                                @c.Cat.CatName
+                                                if (c != Model.CategoryProducts.Last())
+                                                {
+                                                    <span class="mx-1">|</span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Giá:</td>
+                                        <td class="text-dark font-weight-semibold">@Model.Price VND</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Khuyến mãi:</td>
+                                        <td>@Model.Discount%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số lượng:</td>
+                                        <td>@Model.Stock</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Trạng thái:</td>
+                                        <td>
+                                            @if (Model.Active)
+                                            {
+                                                <span class="badge badge-pill badge-cyan">Kích hoạt</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-pill badge-danger">Ẩn</span>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Thông tin khác</h4>
+                        <div class="table-responsive">
+                            <table class="product-info-table m-t-20">
+                                <tbody>
+                                    <tr>
+                                        <td>Nhãn hiệu:</td>
+                                        <td>@Model.Brand</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Màu:</td>
+                                        <td>@Model.Color</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số lượng Size S:</td>
+                                        <td>@Model.SizeS</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số lượng Size M:</td>
+                                        <td>@Model.SizeM</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số lượng Size L:</td>
+                                        <td>@Model.SizeL</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Số lượng Size XL:</td>
+                                        <td>@Model.SizeXl</td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Miêu tả</h4>
+                    </div>
+                    <div class="card-body">
+                        @Html.Raw(Model.Description)
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="product-images">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img class="img-fluid" src="~/Adminassets/images/others/product-1.jpg" alt="">
+                            </div>
+                            <div class="col-md-3">
+                                <img class="img-fluid" src="~/Adminassets/images/others/product-2.jpg" alt="">
+                            </div>
+                            <div class="col-md-3">
+                                <img class="img-fluid" src="~/Adminassets/images/others/product-3.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Content Wrapper END -->

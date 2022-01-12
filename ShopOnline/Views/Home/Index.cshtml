@@ -1,0 +1,442 @@
+﻿@{
+
+    ViewData["Title"] = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var lsNewProducts = ViewData["lsNewProducts"] as IList<Product>;
+    var lsSaleProducts = ViewData["lsSaleProducts"] as IList<Product>;
+    var lsBestSeller = ViewData["lsBestSeller"] as IList<Product>;
+}
+
+@*css thong bao cnd*@
+<link href="~/css/toastr.min.css" rel="stylesheet" />
+
+<style>
+    .carousel-item img {
+        width: 100%;
+        height: auto;
+        max-height: 350px;
+    }
+</style>
+
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <section class="carousel mt-5" aria-label="Gallery">
+            <div class="container">
+                <div id="demo" class="carousel slide" data-ride="carousel">
+                    <ul class="carousel-indicators">
+                        <li data-target="#demo" data-slide-to="0" class="active"></li>
+                        <li data-target="#demo" data-slide-to="1"></li>
+                        <li data-target="#demo" data-slide-to="2"></li>
+                    </ul>
+                    <div class="carousel-inner h-auto">
+                        <div class="carousel-item active">
+                            <img src="~/img/1641539621036.jpeg" />
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/img/EN_A_Spot_Home_Kit_21-22.jfif" />
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/img/21_22_Kit_Launch_Article_header.jpg" />
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Section Begin -->
+        @if (lsNewProducts != null && lsNewProducts.Count() > 0)
+        {
+            <section class="product spad">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <div class="section-title">
+                                <h4>Sản phẩm mới nhất</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            @*<ul class="filter__controls">
+                                    <li class="active" data-filter="*">All</li>
+                                    <li data-filter=".women">Women’s</li>
+                                    <li data-filter=".men">Men’s</li>
+                                    <li data-filter=".kid">Kid’s</li>
+                                    <li data-filter=".accessories">Accessories</li>
+                                    <li data-filter=".cosmetic">Cosmetics</li>
+                                </ul>*@
+                        </div>
+                    </div>
+                    <div class="row property__gallery">
+                        @foreach (var item in lsNewProducts)
+                        {
+                            <div class="col-lg-3 col-md-6 col-sm-6 mix ">
+                                <div class="product__item">
+                                    @* <div class="product__item__pic set-bg" data-setbg="images/product/@item.Thumb">*@
+                                    <div class="product__item__pic">
+                                        <img src="~/images/product/@item.Thumb" />
+                                        <div class="d-inline-block">
+                                            @if (item.Discount > 0)
+                                            {
+                                                <div class="label sale ml-5">Giảm @item.Discount%</div>
+                                            }
+
+                                            <div class="label new">Mới</div>
+                                        </div>
+                                        <ul class="product__hover">
+                                            <li><a href="/Product/details/@item.ProductId"><span class="arrow_expand"></span></a></li>
+                                            @*<li><a href="#"><span class="icon_heart_alt"></span></a></li>*@
+                                            <li>
+                                                <a href="javascript:void(0)" class="product-cart-btn" data-name="@item.ProductName" data-img="@item.Thumb" data-id="@item.ProductId">
+                                                    <span class="icon_cart_alt"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="/product/details/@item.ProductId">@item.ProductName</a></h6>
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        @if (item.Discount > 0)
+                                        {
+
+                                            var priceBefore = item.Price - (item.Price * item.Discount / 100);
+                                            var priceAfter = Math.Round(Convert.ToDouble(priceBefore) / 10000) * 10000;
+
+                                            <div class="product__price">
+                                                <span class="text-danger text-decoration-none" id="price-item-@item.ProductId">@priceAfter.ToString("#,##0") đ</span>
+                                                <span>@item.Price.Value.ToString("#,##0") đ</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="product__price" id="price-item-@item.ProductId">
+                                                @item.Price.Value.ToString("#,##0") đ
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        }
+        <!-- Product Section End -->
+        <!-- Product Section Begin -->
+        @if (lsSaleProducts != null && lsSaleProducts.Count() > 0)
+        {
+            <section class="product spad">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <div class="section-title">
+                                <h4>Sản phẩm Giá tốt nhất</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            @*<ul class="filter__controls">
+                                    <li class="active" data-filter="*">All</li>
+                                    <li data-filter=".women">Women’s</li>
+                                    <li data-filter=".men">Men’s</li>
+                                    <li data-filter=".kid">Kid’s</li>
+                                    <li data-filter=".accessories">Accessories</li>
+                                    <li data-filter=".cosmetic">Cosmetics</li>
+                                </ul>*@
+                        </div>
+                    </div>
+                    <div class="row property__gallery">
+                        @foreach (var item in lsSaleProducts)
+                        {
+                            <div class="col-lg-3 col-md-6 col-sm-6 mix ">
+                                <div class="product__item">
+                                    @* <div class="product__item__pic set-bg" data-setbg="images/product/@item.Thumb">*@
+                                    <div class="product__item__pic">
+                                        <img src="~/images/product/@item.Thumb" />
+                                        <div class="d-inline-block">
+                                            @if (item.Discount > 0)
+                                            {
+                                                <div class="label sale">Giảm @item.Discount%</div>
+                                            }
+
+                                            @*<div class="label new">Mới</div>*@
+                                        </div>
+                                        <ul class="product__hover">
+                                            <li><a href="/Product/details/@item.ProductId"><span class="arrow_expand"></span></a></li>
+                                            @*<li><a href="#"><span class="icon_heart_alt"></span></a></li>*@
+                                            <li>
+                                                <a href="javascript:void(0)" class="product-cart-btn" data-name="@item.ProductName" data-img="@item.Thumb" data-id="@item.ProductId">
+                                                    <span class="icon_cart_alt"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="/product/details/@item.ProductId">@item.ProductName</a></h6>
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        @if (item.Discount > 0)
+                                        {
+
+                                            var priceBefore = item.Price - (item.Price * item.Discount / 100);
+                                            var priceAfter = Math.Round(Convert.ToDouble(priceBefore) / 10000) * 10000;
+
+                                            <div class="product__price">
+                                                <span class="text-danger text-decoration-none" id="price-item-@item.ProductId>@priceAfter.ToString("#,##0") đ</span>
+                                                <span>@item.Price.Value.ToString("#,##0") đ</span>
+                                            </div>
+                                            }
+                                            else
+                                            {
+                                            <div class="product__price">
+                                                @item.Price.Value.ToString("#,##0") đ
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        }
+        <!-- Product Section End -->
+        <!-- Product Section Begin -->
+        @if (lsBestSeller != null && lsBestSeller.Count() > 0)
+        {
+            <section class="product spad">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-5">
+                            <div class="section-title">
+                                <h4>Sản phẩm bán chạy nhất</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            @*<ul class="filter__controls">
+                                    <li class="active" data-filter="*">All</li>
+                                    <li data-filter=".women">Women’s</li>
+                                    <li data-filter=".men">Men’s</li>
+                                    <li data-filter=".kid">Kid’s</li>
+                                    <li data-filter=".accessories">Accessories</li>
+                                    <li data-filter=".cosmetic">Cosmetics</li>
+                                </ul>*@
+                        </div>
+                    </div>
+                    <div class="row property__gallery">
+                        @foreach (var item in lsBestSeller)
+                        {
+                            <div class="col-lg-3 col-md-6 col-sm-6 mix ">
+                                <div class="product__item">
+                                    @* <div class="product__item__pic set-bg" data-setbg="images/product/@item.Thumb">*@
+                                    <div class="product__item__pic">
+                                        <img src="~/images/product/@item.Thumb" />
+                                        <div class="d-inline-block">
+                                            @if (item.Discount > 0)
+                                            {
+                                                <div class="label sale">Giảm @item.Discount%</div>
+                                            }
+
+                                            @*<div class="label new">Mới</div>*@
+                                        </div>
+                                        <ul class="product__hover">
+                                            <li><a href="/Product/details/@item.ProductId"><span class="arrow_expand"></span></a></li>
+                                            @*<li><a href="#"><span class="icon_heart_alt"></span></a></li>*@
+                                            <li>
+                                                <a href="javascript:void(0)" class="product-cart-btn" data-name="@item.ProductName" data-img="@item.Thumb" data-id="@item.ProductId">
+                                                    <span class="icon_cart_alt"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="/product/details/@item.ProductId">@item.ProductName</a></h6>
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        @if (item.Discount > 0)
+                                        {
+
+                                            var priceBefore = item.Price - (item.Price * item.Discount / 100);
+                                            var priceAfter = Math.Round(Convert.ToDouble(priceBefore) / 10000) * 10000;
+
+                                            <div class="product__price">
+                                                <span class="text-danger text-decoration-none" id="price-item-@item.ProductId>@priceAfter.ToString("#,##0") đ</span>
+                                                <span>@item.Price.Value.ToString("#,##0") đ</span>
+                                            </div>
+                                            }
+                                            else
+                                            {
+                                            <div class="product__price">
+                                                @item.Price.Value.ToString("#,##0") đ
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        }
+        <!-- Product Section End -->
+    </main>
+</div>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="productModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="productModal"></h5>
+                <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></a>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            @*<img class="w-100" src="~/images/product/@Model.Thumb" />*@
+                            <img class="w-100" id="product__details__img" src="~/images/product/ao-bong-da-ac-milan-soc-do-den-2021-2022.jpg" />
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="product__details__text">
+                                <h3 id="product__details__name">Áo Bóng ĐÁ AC Milan sọc đỏ đen 2021-2022<span>Brand: Nike </span></h3>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <span>( 169 reviews )</span>
+                                </div>
+                                <div class="product__details__price" id="product__details__price">
+                                    1,990,000 đ
+                                </div>
+                                <div class="product__details__widget">
+                                    <ul>
+                                        <li>
+                                            <span>Kích cỡ:</span>
+                                            <div class="size__btn">
+                                                <label for="s-btn" id="s" class="active">
+                                                    <input type="radio" id="s-btn">
+                                                    s
+                                                </label>
+                                                <label for="m-btn" id="m">
+                                                    <input type="radio" id="m-btn">
+                                                    m
+                                                </label>
+                                                <label for="l-btn" id="l">
+                                                    <input type="radio" id="l-btn">
+                                                    l
+                                                </label>
+                                                <label for="xl-btn" id="xl">
+                                                    <input type="radio" id="xl-btn">
+                                                    xl
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span>Vận chuyển:</span>
+                                            <p>Miễn phí</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="product__details__button mt-4">
+                                    <div class="quantity">
+                                        <span>Quantity:</span>
+                                        <div class="pro-qty">
+                                            <input type="text" id="quantity" value="1">
+                                        </div>
+                                    </div>
+                                    <a @*data-productID="@Model.ProductId"*@ class="cart-btn mr-3" style="cursor:pointer"><span class="icon_cart_alt mr-2"></span> Thêm vào giỏ hàng</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @* js thong bao*@
+    <script src="~/js/toastr.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+
+            //modal sản phẩm
+            $(".product-cart-btn").click(function () {
+                var id = $(this).attr("data-id");
+                var name = $(this).attr("data-name");
+                var img = "/images/product/" + $(this).attr("data-img");
+                var price = $("#price-item-" + id).text();
+
+                $("#productModal").modal("show");
+
+                $(".cart-btn").attr("data-id", id);
+                $("#product__details__img").attr("src", img)
+                $("#product__details__name").text(name);
+                $("#product__details__price").text(price)
+
+            });
+
+
+            //thêm vào giỏ hàng
+            $(".cart-btn").click(function () {
+                var size = $(".size__btn .active").attr("id");
+                var quantity = parseFloat($("#quantity").val());
+                var productID = parseFloat($(this).attr("data-id"));
+                $.ajax({
+                    url: '/api/cart/add',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        productID: productID,
+                        size: size,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $(".number-cart").load("/shop/LoadNumberCart");
+                            toastr.success('Đã thêm sản phẩm vào giỏ hàng')
+                            console.log("ok");
+                        }
+                        else {
+                            console.log("fail");
+                            toastr.error('Thêm sản phẩm thất bại')
+                        }
+                    },
+                    error: function (error) {
+                        toastr.error('Thêm sản phẩm thất bại')
+                        console.log("Lỗi");;
+                    }
+                });
+            });
+        });
+    </script>
+}

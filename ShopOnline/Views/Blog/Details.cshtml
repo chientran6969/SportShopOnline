@@ -1,0 +1,53 @@
+﻿@model ShopOnline.Models.Post
+
+@{
+    ViewData["Title"] = "Blog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content m-t-120">
+<div class="card">
+    <div class="card-body">
+        <div class="container">
+            <h1 class="font-weight-normal m-b-10 text-center"><b>@Model.Title</b></h1>
+            <div class="d-flex m-b-30">
+                @*<div class="avatar avatar-cyan avatar-img">
+                    <img src="~/Adminassets/images/avatars/thumb-6.jpg" alt="">
+                </div>*@
+                <div class="m-l-15">
+                    <p href="javascript:void(0);" class="text-dark m-b-0 font-weight-semibold">@Model.Account.FullName</p>
+                    <p class="m-b-0 text-muted font-size-13">@Model.CreateAt</p>
+                </div>
+            </div>
+            <div class="text-center">
+                <img alt="" class="img-fluid w-80 h-auto " style="max-height: 500px;" src="~/images/posts/@Model.Thumb">
+            </div>
+            <div class="m-t-30 h5">
+                @Html.Raw(Model.Context)
+            </div>
+            <div class="d-flex">
+
+            </div>
+            <div class="d-flex m-t-40 align-items-center">
+                <span class="m-r-15">Share this post: </span>
+                <ul class="list-inline m-b-0">
+                    <li class="list-inline-item">
+                        <button class="font-size-16 btn btn-hover btn-icon btn-rounded">
+                            <i class="fa fa-facebook"></i>
+                        </button>
+                    </li>
+                    <li class="list-inline-item">
+                        <button class="font-size-16 btn btn-hover btn-icon btn-rounded">
+                            <i class="fa fa-twitter"></i>
+                        </button>
+                    </li>
+                    <li class="list-inline-item">
+                        <button class="font-size-16 btn btn-hover btn-icon btn-rounded">
+                            <i class="fa fa-instagram"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

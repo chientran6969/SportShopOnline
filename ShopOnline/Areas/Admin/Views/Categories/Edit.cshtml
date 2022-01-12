@@ -1,0 +1,122 @@
+﻿@model ShopOnline.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+    <h2 class="header-title">Thêm Danh mục</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a href="/Admin" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+            <span class="breadcrumb-item active">Quản lý danh mục</span>
+        </nav>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <div class="row">
+                <input type="hidden" asp-for="CatId" />
+                <div class="form-group col-12 col-lg-6">
+                    <label class="control-label">Tên danh mục:</label>
+                    <input asp-for="CatName" class="form-control" />
+                    <span asp-validation-for="CatName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-12 col-lg-6">
+                    <label class="control-label">Trạng thái:</label>
+                    @if (Model.Active == true)
+                    {
+                        <div class="switch">
+                            <input asp-for="Active" type="checkbox" id="switch-1" checked="checked">
+                            <label for="switch-1"></label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="switch">
+                            <input asp-for="Active" type="checkbox" id="switch-1">
+                            <label for="switch-1"></label>
+                        </div>
+                    }
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            </div>
+            <div class="card-footer">
+                <div class="m-b-15 mt-2 text-right">
+                    <a asp-action="Index" class="btn btn-primary text-light">
+                        <i class="anticon anticon-backward m-r-5"></i>
+                        <span>Trở về</span>
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="anticon anticon-save m-r-5"></i>
+                        <span>Lưu</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@*<h1>Edit</h1>
+
+    <h4>Category</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="CatId" />
+                <div class="form-group">
+                    <label asp-for="CatName" class="control-label"></label>
+                    <input asp-for="CatName" class="form-control" />
+                    <span asp-validation-for="CatName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Thumb" class="control-label"></label>
+                    <input asp-for="Thumb" class="form-control" />
+                    <span asp-validation-for="Thumb" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Alias" class="control-label"></label>
+                    <input asp-for="Alias" class="form-control" />
+                    <span asp-validation-for="Alias" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ParentId" class="control-label"></label>
+                    <input asp-for="ParentId" class="form-control" />
+                    <span asp-validation-for="ParentId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Levels" class="control-label"></label>
+                    <input asp-for="Levels" class="form-control" />
+                    <span asp-validation-for="Levels" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Active" class="control-label"></label>
+                    <input asp-for="Active" class="form-control" />
+                    <span asp-validation-for="Active" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

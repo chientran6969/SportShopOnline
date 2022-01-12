@@ -1,0 +1,196 @@
+﻿@model IEnumerable<ShopOnline.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<!-- page css -->
+<link href="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+<div class="page-header">
+    <h2 class="header-title">Quản lý sản phẩm</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+            <span class="breadcrumb-item active">Quản Lý Sản Phẩm</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
+                        <select class="custom-select" id="txtCatID" name="catID" style="min-width: 180px;" asp-items="ViewBag.DanhMuc">
+                            <option selected>Danh mục</option>
+                            <option value="0">Tất cả</option>
+                        </select>
+                    </div>
+                    <div class="m-b-10">
+                        <select class="custom-select" style="min-width: 180px;">
+                            <option selected>Trạng thái</option>
+                            <option value="-1">Tất cả</option>
+                            <option value="avai">Còn hàng</option>
+                            <option value="notAvai">Hết hàng</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-right">
+                <a class="btn btn-primary" asp-area="Admin" asp-controller="Products" asp-action="Create">
+                    <i class="anticon anticon-plus-circle m-r-5"></i>
+                    <span>Thêm sản phẩm</span>
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table" id="data-table">
+                <thead>
+                    <tr>
+
+                        <th>Sản Phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Giá</th>
+                        <th>Khuyến mãi</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+
+                            <tr>
+
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="img-fluid rounded"
+                                             src="~/images/product/@item.Thumb" style="max-width: 60px"
+                                             alt="">
+                                        <h6 class="m-b-0 m-l-10">@item.ProductName</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    @foreach (var c in item.CategoryProducts)
+                                    {
+                                        @c.Cat.CatName
+                                        if (c != item.CategoryProducts.Last())
+                                        {
+                                            <span class="mx-1">|</span>
+                                        }
+                                    }
+                                </td>
+                                <td>@item.Price VND</td>
+                                <td>@item.Discount % </td>
+
+                                <td>
+                                    @if (item.Stock > 0 && item.Active)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Còn hàng</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>Hết hàng</div>
+                                        </div>
+                                    }
+
+                                </td>
+                                <td class="text-right">
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Details" asp-route-id="@item.ProductId">
+                                        <i class="anticon anticon-info-circle"></i>
+                                    </a>
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@item.ProductId">
+                                        <i class="anticon anticon-edit"></i>
+                                    </a>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- page js -->
+    <script src="~/Adminassets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Adminassets/js/pages/datatables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            jQuery("#txtCatID").change(function () {
+                var catID = jQuery(this).children(":selected").attr("value");
+
+                catID = parseFloat(catID);
+
+                $('#txtCatID option').removeAttr('selected');
+
+                $("#txtCatID > [value-" + catID + "]").attr("selected", "true");
+
+                $.ajax({
+                    url: '/Admin/Products/Filter',
+                    datatype: "json",
+                    type: "GET",
+                    data: {
+                        CatID: catID
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.status == "success") {
+                            window.location.href = results.redirectUrl;
+                        }
+                        
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+        });
+            
+
+        $(document).ready(function () {
+            jQuery("#txtCatID").change(function () {
+                //var catID = jQuery(this).children(":selected").attr("value");
+
+                //catID = parseFloat(catID);
+
+                //$('#txtCatID option').removeAttr('selected');
+
+                //$("#txtCatID > [value-" + catID + "]").attr("selected", "true");
+
+                //$.ajax({
+                //    url: '/Admin/Products/Filter',
+                //    datatype: "json",
+                //    type: "GET",
+                //    data: {
+                //        CatID: catID
+                //    },
+                //    async: true,
+                //    success: function (results) {
+                //        if (success.status == "success") {
+                //            window.location.hef = results.redirectUrl;
+
+                //        }
+                //    },
+                //    error: function (xhr) {
+                //        alert('error');
+                //    }
+                //});
+            });
+        });
+    </script>
+}

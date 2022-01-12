@@ -1,0 +1,151 @@
+﻿@model IEnumerable<ShopOnline.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- page css -->
+<link href="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+<div class="page-header">
+    <h2 class="header-title">Quản lý</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a href="/Admin" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+                <div class="d-md-flex">
+                    <div class="m-b-10 m-r-15">
+                        <select class="custom-select" asp-items="ViewBag.Trangthai" id="txtStatus" style="min-width: 180px;">
+                            <option selected>--Trạng thái--</option>
+                            <option value="0">Tất cả</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table" id="data-table">
+                <thead>
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Tên khách hàng</th>
+                        <th>Ngày đặt</th>
+                        <th>Địa chỉ</th>
+                        <th>SDT</th>
+                        <th>Thành tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+
+                            <tr>
+
+                                @*<td>
+                                        <div class="d-flex align-items-center">
+                                            <img class="img-fluid rounded"
+                                                 src="~/images/product/@item.Thumb" style="max-width: 60px"
+                                                 alt="">
+                                            <h6 class="m-b-0 m-l-10">@item.ProductName</h6>
+                                        </div>
+                                    </td>*@
+                                <td>@item.OrderId</td>
+                                <td>@item.Account.FullName</td>
+                                <td>@item.OrderDate </td>
+                                <td>@item.Address</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@item.Amount.Value.ToString("#,##0")đ</td>
+                                <td>
+                                    @if (item.Status == -1)
+                                    {
+                                        <span class="badge badge-pill badge-danger">Từ chối</span>
+                                    }
+                                    else if (item.Status == 1)
+                                    {
+                                        <span class="badge badge-pill badge-warning">Chờ xác nhận</span>
+                                    }
+                                    else if (item.Status == 2)
+                                    {
+                                        <span class="badge badge-pill badge-primary">Đang đóng gói</span>
+                                    }
+                                    else if (item.Status == 3)
+                                    {
+                                        <span class="badge badge-pill badge-info">Đang giao hàng</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-pill badge-success">Hoàn thành</span>
+                                    }
+
+
+                                </td>
+                                <td>
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Details" asp-route-id="@item.OrderId">
+                                        <i class="anticon anticon-info-circle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- page js -->
+    <script src="~/Adminassets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Adminassets/js/pages/datatables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+            jQuery("#txtStatus").change(function () {
+                var status = jQuery(this).children(":selected").attr("value");
+
+                status = parseFloat(status);
+
+                $('#txtStatus option').removeAttr('selected');
+
+                $("#txtStatus > [value-" + status + "]").attr("selected", "true");
+
+                $.ajax({
+                    url: '/Admin/Orders/Filter',
+                    datatype: "json",
+                    type: "GET",
+                    data: {
+                        statusID: status
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.status == "success") {
+                            window.location.href = results.redirectUrl;
+                        }
+
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+        });
+
+
+
+    </script>
+}

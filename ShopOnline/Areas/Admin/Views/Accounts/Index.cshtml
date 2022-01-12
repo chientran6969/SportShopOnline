@@ -1,0 +1,91 @@
+﻿@model IEnumerable<ShopOnline.Models.Account>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- page css -->
+<link href="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
+
+
+<!-- Content Wrapper START -->
+
+<div class="page-header">
+    <h2 class="header-title">Quản lý tài khoản</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a href="/Admin" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Admin</a>
+            <span class="breadcrumb-item active">Quản lý tài khoản</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="m-t-10">
+            <table id="data-table" class="table">
+                <thead>
+                    <tr>
+                        <th>Họ Tên</th>
+                        <th>Email</th>
+                        <th>Điện thoại</th>
+                        <th>Ngày Sinh</th>
+                        <th>Quyền</th>
+                        <th>Kích hoạt</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.FullName</td>
+                                <td>@item.Email</td>
+                                <td>@item.Phone</td>
+                                <td>@item.Birthday </td>
+                                <td>@item.Role</td>
+                                <td>
+                                    @if (item.Active)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Được kích hoạt</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>Bị khóa</div>
+                                        </div>
+                                    }
+
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Details" asp-route-id="@item.AccountId">
+                                        <i class="anticon anticon-info-circle"></i>
+                                    </a>
+                                    <a class="btn btn-icon btn-hover btn-sm btn-rounded" asp-action="Edit" asp-route-id="@item.AccountId">
+                                        <i class="anticon anticon-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Content Wrapper END -->
+
+@section Scripts {
+    <!-- page js -->
+    <script src="~/Adminassets/vendors/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Adminassets/vendors/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="~/Adminassets/js/pages/datatables.js"></script>
+}
+

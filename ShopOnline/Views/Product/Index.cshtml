@@ -1,0 +1,472 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = ViewData["categories"] as IList<Category>;
+    var selectedCat = ViewBag.SelectedCat;
+    int CurrentPage = (int)ViewBag.CurrentPage;
+    int TotalPage = (int)ViewBag.TotalPage;
+}
+@*css thong bao cnd*@
+<link href="~/css/toastr.min.css" rel="stylesheet" />
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="/"><i class="fa fa-home"></i> Trang chủ</a>
+                    <span>Sản phẩm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Shop Section Begin -->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+
+                <div class="shop__sidebar">
+                    <div class="sidebar__categories">
+                        <div class="section-title">
+                            <h4>Danh mục</h4>
+                        </div>
+                        <div class="categories__accordion">
+                            <div class="accordion" id="accordionExample">
+                                @if (selectedCat == 0)
+                                {
+                                    <div class="card">
+                                        <div class="card-heading active">
+                                            <a href="/product?catID=0">Tất Cả Sản Phẩm</a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="card">
+                                        <div class="card-heading">
+                                            <a href="/product?catID=0">Tất Cả Sản Phẩm</a>
+                                        </div>
+                                    </div>
+                                }
+
+                                @foreach (var item in categories)
+                                {
+                                    if (selectedCat == item.CatId)
+                                    {
+                                        <div class="card">
+                                            <div class="card-heading active">
+                                                <a href="/product?catID=@item.CatId">@item.CatName</a>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="card">
+                                            <div class="card-heading">
+                                                <a href="/product?catID=@item.CatId">@item.CatName</a>
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+
+                                @*<div class="card">
+                                        <div class="card-heading">
+                                            <a data-toggle="collapse" data-target="#collapseTwo">Men</a>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <ul>
+                                                    <li><a href="#">Coats</a></li>
+                                                    <li><a href="#">Jackets</a></li>
+                                                    <li><a href="#">Dresses</a></li>
+                                                    <li><a href="#">Shirts</a></li>
+                                                    <li><a href="#">T-shirts</a></li>
+                                                    <li><a href="#">Jeans</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar__filter">
+                        <div class="section-title">
+                            <h4>Tìm theo giá</h4>
+                        </div>
+                        <div class="filter-range-wrap">
+
+
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                 data-min="0" data-max="5000000"></div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount" class="text-danger">
+                                    <input type="text" id="maxamount" class="text-danger">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="text-right">
+                            <button class="mt-2 price-filter-btn">Filter</button>
+                        </div>
+
+                    </div>
+                    @*<div class="sidebar__sizes">
+                            <div class="section-title">
+                                <h4>Shop by size</h4>
+                            </div>
+                            <div class="size__list">
+                                <label for="xxs">
+                                    xxs
+                                    <input type="checkbox" id="xxs">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="xs">
+                                    xs
+                                    <input type="checkbox" id="xs">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="xss">
+                                    xs-s
+                                    <input type="checkbox" id="xss">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="s">
+                                    s
+                                    <input type="checkbox" id="s">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="m">
+                                    m
+                                    <input type="checkbox" id="m">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="ml">
+                                    m-l
+                                    <input type="checkbox" id="ml">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="l">
+                                    l
+                                    <input type="checkbox" id="l">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="xl">
+                                    xl
+                                    <input type="checkbox" id="xl">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>*@
+
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="row">
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <div class="col-lg-4 col-md-6">
+                                <div class="product__item">
+                                    @* <div class="product__item__pic set-bg" data-setbg="images/product/@item.Thumb">*@
+                                    <div class="product__item__pic">
+                                        <img src="~/images/product/@item.Thumb" />
+                                        <div class="d-inline-block">
+                                            @if (item.Discount > 0)
+                                            {
+                                                <div class="label sale ml-5">Giảm @item.Discount%</div>
+                                            }
+
+                                            <div class="label new">Mới</div>
+                                        </div>
+                                        <ul class="product__hover">
+                                            <li><a href="/Product/details/@item.ProductId"><span class="arrow_expand"></span></a></li>
+                                            @*<li><a href="#"><span class="icon_heart_alt"></span></a></li>*@
+                                            <li>
+                                                <a href="javascript:void(0)" class="product-cart-btn" data-name="@item.ProductName" data-img="@item.Thumb" data-id="@item.ProductId">
+                                                    <span class="icon_cart_alt"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="/product/details/@item.ProductId">@item.ProductName</a></h6>
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        @if (item.Discount > 0)
+                                        {
+
+                                            var priceBefore = item.Price - (item.Price * item.Discount / 100);
+                                            var priceAfter = Math.Round(Convert.ToDouble(priceBefore) / 10000) * 10000;
+
+                                            <div class="product__price">
+                                                <span class="text-danger text-decoration-none" id="price-item-@item.ProductId">@priceAfter.ToString("#,##0") đ</span>
+                                                <span>@item.Price.Value.ToString("#,##0") đ</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="product__price" id="price-item-@item.ProductId">
+                                                @item.Price.Value.ToString("#,##0") đ
+                                            </div>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="mx-auto h5">Không tìm thấy sản phẩm</p>
+                    }
+
+
+                    <div class="col-lg-12 text-center">
+                        <div class="pagination__option">
+                            @{
+                                if (CurrentPage != 1)
+                                {
+                                    <a href="@Url.Action("Index", new { page = CurrentPage - 1 })"><i class="fa fa-angle-left"></i></a>
+                                }
+                            }
+
+                            @{
+                                for (var i = 1; i <= TotalPage; i++)
+                                {
+                                    @if (CurrentPage == i)
+                                    {
+                                        <a class="active" href="@Url.Action("Index", new { page = i })">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Index", new { page = i })">@i</a>
+                                    }
+
+                                }
+                            }
+                            @{
+                                if (CurrentPage < TotalPage)
+                                {
+                                    <a href="@Url.Action("Index", new { page = CurrentPage + 1 })"><i class="fa fa-angle-right"></i></a>
+                                }
+                            }
+                            @*<a href="#">1</a>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <a href="#"><i class="fa fa-angle-right"></i></a>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shop Section End -->
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="productModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="productModal"></h5>
+                <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></a>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            @*<img class="w-100" src="~/images/product/@Model.Thumb" />*@
+                            <img class="w-100" id="product__details__img" src="~/images/product/ao-bong-da-ac-milan-soc-do-den-2021-2022.jpg" />
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="product__details__text">
+                                <h3 id="product__details__name">Áo Bóng ĐÁ AC Milan sọc đỏ đen 2021-2022<span>Brand: Nike </span></h3>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <span>( 169 reviews )</span>
+                                </div>
+                                <div class="product__details__price" id="product__details__price">
+                                    1,990,000 đ
+                                </div>
+                                <div class="product__details__widget">
+                                    <ul>
+                                        <li>
+                                            <span>Kích cỡ:</span>
+                                            <div class="size__btn">
+                                                <label for="s-btn" id="s" class="active">
+                                                    <input type="radio" id="s-btn">
+                                                    s
+                                                </label>
+                                                <label for="m-btn" id="m">
+                                                    <input type="radio" id="m-btn">
+                                                    m
+                                                </label>
+                                                <label for="l-btn" id="l">
+                                                    <input type="radio" id="l-btn">
+                                                    l
+                                                </label>
+                                                <label for="xl-btn" id="xl">
+                                                    <input type="radio" id="xl-btn">
+                                                    xl
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span>Vận chuyển:</span>
+                                            <p>Miễn phí</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="product__details__button mt-4">
+                                    <div class="quantity">
+                                        <span>Quantity:</span>
+                                        <div class="pro-qty">
+                                            <input type="text" id="quantity" value="1">
+                                        </div>
+                                    </div>
+                                    <a @*data-productID="@Model.ProductId"*@ class="cart-btn mr-3" style="cursor:pointer"><span class="icon_cart_alt mr-2"></span> Thêm vào giỏ hàng</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* js thong bao*@
+    <script src="~/js/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var minURL = GetURLParameter('min');
+            var maxURL = GetURLParameter('max');
+
+            var minSlider = 0;
+            var maxSlider = 5000000;
+
+            var rangeSlider = $(".price-range"),
+                minamount = $("#minamount"),
+                maxamount = $("#maxamount"),
+                minPrice = rangeSlider.data('min'),
+                maxPrice = rangeSlider.data('max');
+
+
+            rangeSlider.slider({
+                range: true,
+                min: minPrice,
+                max: maxPrice,
+                values: [minPrice, maxPrice],
+                slide: function (event, ui) {
+                    minSlider = Math.round(ui.values[0] / 100000) * 100000
+                    maxSlider = Math.round(ui.values[1] / 100000) * 100000
+                    minamount.val(new Intl.NumberFormat().format(minSlider) + ' đ');
+                    maxamount.val(new Intl.NumberFormat().format(maxSlider) + ' đ');
+                    //console.log(minSlider);
+                }
+            });
+            minamount.val(new Intl.NumberFormat().format(rangeSlider.slider("values", 0)) + ' đ');
+            maxamount.val(new Intl.NumberFormat().format(rangeSlider.slider("values", 1)) + ' đ');
+
+            if (minURL && maxURL) {
+                rangeSlider.slider({
+                    range: true,
+                    min: minPrice,
+                    max: maxPrice,
+                    values: [minURL, maxURL]
+                });
+                minamount.val(new Intl.NumberFormat().format(rangeSlider.slider("values", 0)) + ' đ');
+                maxamount.val(new Intl.NumberFormat().format(rangeSlider.slider("values", 1)) + ' đ');
+            };
+
+
+            $(".price-filter-btn").click(function () {
+                window.location.href = `/product?min=${minSlider}&max=${maxSlider}`
+                //console.log(minSlider);
+            });
+
+            //modal sản phẩm
+            $(".product-cart-btn").click(function () {
+                var id = $(this).attr("data-id");
+                var name = $(this).attr("data-name");
+                var img = "/images/product/" + $(this).attr("data-img");
+                var price = $("#price-item-" + id).text();
+
+                $("#productModal").modal("show");
+
+                $(".cart-btn").attr("data-id", id);
+                $("#product__details__img").attr("src", img)
+                $("#product__details__name").text(name);
+                $("#product__details__price").text(price)
+
+            });
+
+
+            //thêm vào giỏ hàng
+            $(".cart-btn").click(function () {
+                var size = $(".size__btn .active").attr("id");
+                var quantity = parseFloat($("#quantity").val());
+                var productID = parseFloat($(this).attr("data-id"));
+                $.ajax({
+                    url: '/api/cart/add',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        productID: productID,
+                        size: size,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $(".number-cart").load("/shop/LoadNumberCart");
+                            toastr.success('Đã thêm sản phẩm vào giỏ hàng')
+                        }
+                        else {
+                            console.log("fail");
+                            toastr.error('Thêm sản phẩm thất bại')
+                        }
+                    },
+                    error: function (error) {
+                        console.log("lỗi");
+                        toastr.error('Thêm sản phẩm thất bại')
+                    }
+                });
+            });
+        });
+
+        // lấy tham số từ URL
+        function GetURLParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return decodeURIComponent(sParameterName[1]);
+                }
+            }
+        }
+    </script>
+}

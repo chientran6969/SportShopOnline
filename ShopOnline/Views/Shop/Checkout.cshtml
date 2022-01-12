@@ -1,0 +1,159 @@
+﻿@model ShopOnline.ViewModels.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var cart = ViewData["cart"] as List<ShopOnline.ViewModels.CartItem>;
+    int i = 1;
+}
+
+<style>
+    .info-left {
+        background-color: #f5f5f5;
+    }
+
+    .info-left h5 {
+        margin-top: 30px;
+    }
+</style>
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="/"><i class="fa fa-home"></i> Home</a>
+                    <span>Xác nhận đặt hàng</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 coupon__link">
+                <h6 class="text-uppercase " style="font-size: 18px; font-weight:600; color:#000">Xác nhận đặc hàng</h6>
+
+                @*<h6 class="coupon__link">
+                        <span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click
+                        here to enter your code.
+                    </h6>*@
+                @if (ViewBag.status != null)
+                {
+                    <p class="text-success" style="font-size: 15px; font-weight:500;">
+                        Đặt hàng thành công, đơn hàng sẽ được xử lý.
+                        <div><a href="/" class="text-primary">Tiếp tục mua sắm</a></div>
+                    </p>
+                }
+                else if (ViewBag.outStock != null)
+                {
+                    <p class="text-danger" style="font-size: 15px; font-weight:500;">
+                        Đặt hàng thất bại, @ViewBag.outStock đã hết hàng.
+                        <div>
+                            <a href="/cart" class="text-primary">Trở về giỏ hàng</a>
+                        </div>
+                    </p>
+                }
+
+            </div>
+        </div>
+        <form method="POST" class="checkout__form">
+            <div class="row">
+                @if (ViewBag.status != null)
+                {
+                    <div class="col-lg-6 info-left">
+                        <div class="contact__content">
+                            <div class="contact__address">
+                                <h5>Thông tin đơn hàng</h5>
+                                <ul>
+                                    <li>
+                                        <h6 class="d-inline-block"><i class="fa fa-user"></i>Họ và tên: </h6>
+                                        <p class="d-inline-block">@ViewBag.FullName</p>
+                                    </li>
+                                    <li>
+                                        <h6 class="d-inline-block"><i class="fa fa-phone"></i>Số điện thoại:</h6>
+                                        <p class="d-inline-block">@Model.PhoneNumber</p>
+                                    </li>
+
+                                    <li>
+                                        <h6 class="d-inline-block"><i class="fa fa-map-marker"></i>Địa chỉ: </h6>
+                                        <p class="d-inline-block">@Model.Address</p>
+                                    </li>
+                                    <li>
+                                        <h6 class="d-inline-block"><i class="fa fa-sticky-note-o"></i>Ghi chú:</h6>
+                                        <p class="d-inline-block">@Model.Note</p>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else { 
+                <div class="col-lg-6 info-left">
+                    <h5>Thông tin người nhận hàng</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="checkout__form__input">
+                                <p>Họ và Tên <span>*</span>: </p>
+                                <input type="text" disabled value="@ViewBag.FullName">
+                            </div>
+                            <div class="checkout__form__input">
+                                <p>Số điện thoại <span>*</span>:</p>
+                                <input type="text" asp-for="PhoneNumber" placeholder="Số điện thoại người nhận">
+                                <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                            </div>
+                            <div class="checkout__form__input">
+                                <p>Địa chỉ <span>*</span>:</p>
+                                <input type="text" asp-for="Address" placeholder="Địa chỉ người nhận">
+                                <span class="text-danger" asp-validation-for="Address"></span>
+                            </div>
+                            <div class="checkout__form__input">
+                                <p>Ghi chú:</p>
+                                <input type="text" asp-for="Note" placeholder="Ghi chú">
+                                <span class="text-danger" asp-validation-for="Note"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+                <div class="col-lg-6">
+                    <div class="checkout__order">
+                        <h5>Chi tiết đơn hàng</h5>
+
+                        <div class="checkout__order__product">
+                            <ul>
+                                <li>
+                                    <span class="top__text">Sản phẩm</span>
+                                    <span class="top__text__right">Tổng cộng</span>
+                                </li>
+                                @foreach (var item in cart)
+                                {
+                                    <li>@i. @item.Product.ProductName<span>@item.Quantity x @item.Price.ToString("#,##0") đ</span></li>
+
+                                    i++;
+                                }
+                            </ul>
+                        </div>
+
+
+                        <div class="checkout__order__total">
+                            <ul>
+                                <li>Thành tiền<span>@cart.Sum(p => p.Amount).ToString("#,##0") đ</span></li>
+                            </ul>
+                        </div>
+                        @if (ViewBag.status != "Success")
+                        {
+                            <button type="submit" class="site-btn">Xác nhận đặt hàng</button>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Checkout Section End -->
